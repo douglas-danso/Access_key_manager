@@ -1,0 +1,53 @@
+{% block content %}
+<h4><a href="{% url 'authentication:logout'%}"> Logout</a></h4>
+<h1>Access Keys</h1>
+
+
+
+<h3>welcome, {{school}}</h3>
+{% for access_key in page_obj %} {% if access_key.status == 'active' %}
+
+<p>Your active access key: {{ access_key.key }}</p>
+<p>expiry date : {{ access_key.expiry_date }}</p>
+{% endif %} {% endfor %}
+
+<h2>Access Key History</h2>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>Key</th>
+            <th>Status</th>
+            <th>Date of Procurement</th>
+            <th>Expiry Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for access_key in page_obj %}
+
+        <tr>
+
+            <td>{{ access_key.key }}</td>
+            <td>{{ access_key.status }}</td>
+            <td>{{ access_key.date_of_procurement }}</td>
+            <td>{{ access_key.expiry_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<button><a href="{% url 'schoolapp:purchase_key' user.id%}"> Request Access Key</a></button> {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{% if message.tags %}<b> "{{ message.tags }}:"</b>{% endif %} {{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">previous</a> {% endif %}
+
+    <span class="current-page">{{ page_obj.number }}</span> {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a> {% endif %}
+</div>
+{% endblock %}

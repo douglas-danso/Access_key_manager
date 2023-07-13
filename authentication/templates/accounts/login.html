@@ -1,0 +1,16 @@
+<h1>Login</h1>
+<form method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">Log in</button>
+    <button type="submit"><a href="{% url 'authentication:password_reset' %}">Forgot Password</a></button>
+    {% if next %}
+    <input type="hidden" name="next" value="{{ next }}">
+{% endif %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{% if message.tags %}<b> "{{ message.tags }}:"</b>{% endif %} {{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+</form>

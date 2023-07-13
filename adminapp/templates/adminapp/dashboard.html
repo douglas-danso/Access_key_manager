@@ -1,0 +1,70 @@
+ {% extends 'adminapp/base.html' %} {% block content %}
+<h4><a href="{% url 'authentication:logout'%}"> Logout</a></h4>
+<h2>Access Keys</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>School</th>
+            <th>Key</th>
+            <th>Status</th>
+            <th>Date of Procurement</th>
+            <th>Expiry Date</th>
+
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for access_key in object_list %}
+        <tr>
+            <td>{{ access_key.school }}</td>
+            <td>{{ access_key.key }}</td>
+            <td>{{ access_key.status }}</td>
+            <td>{{ access_key.date_of_procurement }}</td>
+            <td>{{ access_key.expiry_date }}</td>
+            {% if access_key.status != 'revoked'%}
+            <td>
+                <a href="{% url 'adminapp:access_key_update' access_key.pk %}">Update</a>
+            </td>
+            {% else %}
+            <td>
+                No Action
+            </td>
+
+            {% endif %}
+        </tr>
+
+        {% empty %}
+        <tr>
+            <td colspan="5">No access keys found.</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+<h2><a href="{% url 'adminapp:access_key_info' %}">Get access key api</a></h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{% if message.tags %}<b> "{{ message.tags }}:"</b>{% endif %} {{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="pagination">
+    <span class="step-links">
+      {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span> {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endif %}
+    </span>
+</div>
+
+{% endblock %}

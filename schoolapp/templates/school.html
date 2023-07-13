@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>Register School</title>
+    </head>
+    <body>
+        <h2>Hello {{user.email}}, please enter the name of your school to register</h2>
+        <form method = "POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="register">Register</a>
+                </button>
+        </form>
+    </body>
+</html>
+

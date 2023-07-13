@@ -1,0 +1,21 @@
+
+{% extends "adminapp/base.html" %}
+
+{% block content %}
+  <h1>Update Access Key</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Access Key</button>
+  </form>
+ {% if access_key.status == 'active' %}
+  <a href="{% url 'adminapp:access_key_revoke' access_key.id %}">Revoke</a> 
+{% endif %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{% if message.tags %}<b> "{{ message.tags }}:"</b>{% endif %} {{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}
